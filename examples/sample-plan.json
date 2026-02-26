@@ -1,7 +1,88 @@
 {
   "format_version": "1.2",
   "terraform_version": "1.7.0",
-  "planned_values": {},
+  "planned_values": {
+    "root_module": {
+      "resources": [
+        {
+          "address": "aws_instance.web",
+          "type": "aws_instance",
+          "name": "web",
+          "provider_name": "registry.terraform.io/hashicorp/aws",
+          "schema_version": 1,
+          "values": {
+            "ami": "ami-0c55b159cbfafe1f0",
+            "instance_type": "t3.medium",
+            "tags": { "Name": "web-server", "Environment": "production" }
+          }
+        },
+        {
+          "address": "aws_instance.worker[0]",
+          "type": "aws_instance",
+          "name": "worker",
+          "provider_name": "registry.terraform.io/hashicorp/aws",
+          "schema_version": 1,
+          "values": { "ami": "ami-0c55b159cbfafe1f0", "instance_type": "t3.large" }
+        },
+        {
+          "address": "aws_instance.worker[1]",
+          "type": "aws_instance",
+          "name": "worker",
+          "provider_name": "registry.terraform.io/hashicorp/aws",
+          "schema_version": 1,
+          "values": { "ami": "ami-0c55b159cbfafe1f0", "instance_type": "t3.large" }
+        },
+        {
+          "address": "aws_db_instance.main",
+          "type": "aws_db_instance",
+          "name": "main",
+          "provider_name": "registry.terraform.io/hashicorp/aws",
+          "schema_version": 2,
+          "values": { "instance_class": "db.r6g.large", "engine": "postgres", "allocated_storage": 50, "multi_az": true }
+        },
+        {
+          "address": "aws_s3_bucket.logs",
+          "type": "aws_s3_bucket",
+          "name": "logs",
+          "provider_name": "registry.terraform.io/hashicorp/aws",
+          "schema_version": 0,
+          "values": { "bucket": "myapp-logs-prod-2024" }
+        },
+        {
+          "address": "aws_lb.app",
+          "type": "aws_lb",
+          "name": "app",
+          "provider_name": "registry.terraform.io/hashicorp/aws",
+          "schema_version": 0,
+          "values": { "name": "app-alb", "load_balancer_type": "application", "internal": false }
+        },
+        {
+          "address": "aws_iam_role.app_role",
+          "type": "aws_iam_role",
+          "name": "app_role",
+          "provider_name": "registry.terraform.io/hashicorp/aws",
+          "schema_version": 0,
+          "values": { "name": "app-role-v2" }
+        },
+        {
+          "address": "aws_cloudwatch_log_group.app",
+          "type": "aws_cloudwatch_log_group",
+          "name": "app",
+          "provider_name": "registry.terraform.io/hashicorp/aws",
+          "schema_version": 0,
+          "values": { "name": "/app/production", "retention_in_days": 90 }
+        },
+        {
+          "address": "aws_route53_record.app",
+          "type": "aws_route53_record",
+          "name": "app",
+          "provider_name": "registry.terraform.io/hashicorp/aws",
+          "schema_version": 2,
+          "values": { "name": "app.example.com", "type": "A" }
+        }
+      ]
+    }
+  },
   "resource_changes": [
     {
       "address": "aws_instance.web",

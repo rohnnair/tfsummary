@@ -99,17 +99,29 @@ async function estimateCosts(resources, planData, region) {
   // Write the plan to a temp file for oiq to consume
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'tfsummary-'));
   const tmpPlan = path.join(tmpDir, 'plan.json');
+  const tmpMatch = path.join(tmpDir, 'match.json');
   fs.writeFileSync(tmpPlan, JSON.stringify(planData));
 
   try {
-    const args = [
-      '--prices', PRICES_CSV,
-      '--plan', tmpPlan,
+    // Step 1: oiq match — match resources to pricing rows
+    execFileSync(oiqBin, [
+      'match',
+      '--pricesheet', PRICES_CSV,
+      '--output', tmpMatch,
+      tmpPlan,
+    ], {
+      encoding: 'utf-8',
+      timeout: 30000,
+      stdio: ['pipe', 'pipe', 'pipe'],
+    });
+
+    // Step 2: oiq price — calculate costs from matches
+    const result = execFileSync(oiqBin, [
+      'price',
+      '--input', tmpMatch,
       '--region', region,
       '--format', 'json',
-    ];
-
-    const result = execFileSync(oiqBin, args, {
+    ], {
       encoding: 'utf-8',
       timeout: 30000,
       stdio: ['pipe', 'pipe', 'pipe'],
@@ -121,6 +133,7 @@ async function estimateCosts(resources, planData, region) {
     // Cleanup temp files
     try {
       fs.unlinkSync(tmpPlan);
+      fs.unlinkSync(tmpMatch);
       fs.rmdirSync(tmpDir);
     } catch {
       // ignore cleanup errors
@@ -129,26 +142,28 @@ async function estimateCosts(resources, planData, region) {
 }
 
 function applyCosts(resources, costData) {
-  const costItems = costData.resources || costData.line_items || costData || [];
+  const costItems = costData.resources || [];
   const costMap = new Map();
 
-  if (Array.isArray(costItems)) {
-    for (const item of costItems) {
-      const addr = item.address || item.resource || item.name;
-      if (addr) {
-        costMap.set(addr, {
-          monthly: item.monthly_cost || item.monthlyCost || item.cost || 0,
-          hourly: item.hourly_cost || item.hourlyCost || 0,
-        });
-      }
+  for (const item of costItems) {
+    const addr = item.address;
+    if (addr && item.price) {
+      costMap.set(addr, {
+        monthly: item.price.max || item.price.min || 0,
+      });
     }
+  }
+
+  // Store total estimate from oiq
+  if (costData.price) {
+    const total = costData.price.max || costData.price.min || 0;
+    costData._totalMonthly = total;
   }
 
   for (const r of resources) {
     const cost = costMap.get(r.address);
     if (cost) {
       r.monthlyCost = cost.monthly;
-      r.hourlyCost = cost.hourly;
     }
   }
 }

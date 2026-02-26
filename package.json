@@ -1,6 +1,6 @@
 {
   "name": "tfsummary",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Beautify Terraform plan output with cost estimates via OpenInfraQuote",
   "main": "src/index.js",
   "bin": {
