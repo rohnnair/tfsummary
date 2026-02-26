@@ -1,20 +1,20 @@
 {
   "name": "tfsummary",
-  "version": "1.0.1",
-  "description": "Beautify Terraform plan output with cost estimates via OpenInfraQuote",
+  "version": "1.1.0",
+  "description": "Beautify Terraform plan output with cost estimates",
   "main": "src/index.js",
   "bin": {
     "tfsummary": "./bin/tfsummary.js"
   },
   "scripts": {
-    "test": "node bin/tfsummary.js examples/sample-plan.json --no-cost"
+    "test": "node bin/tfsummary.js examples/sample-plan.json --region us-east-1"
   },
   "keywords": [
     "terraform",
     "plan",
     "summary",
     "cost",
-    "openinfraquote",
+    "aws",
     "cli",
     "devops",
     "infrastructure"

@@ -4,7 +4,7 @@ const { program } = require('commander');
 const fs = require('fs');
 const path = require('path');
 const { parsePlan } = require('../src/parser/plan');
-const { estimateCosts } = require('../src/cost/oiq');
+const { estimateCosts } = require('../src/cost/pricing');
 const { renderTerminal } = require('../src/renderers/terminal');
 const { renderHtml } = require('../src/renderers/html');
 const { renderMarkdown } = require('../src/renderers/markdown');
@@ -12,12 +12,11 @@ const { renderMarkdown } = require('../src/renderers/markdown');
 program
   .name('tfsummary')
   .description('Beautify Terraform plan output with cost estimates')
-  .version('1.0.0')
+  .version('1.1.0')
   .argument('[plan-file]', 'Path to terraform show -json output file')
   .option('-f, --format <format>', 'Output format: terminal, html, markdown, json', 'terminal')
   .option('-o, --out <file>', 'Write output to file instead of stdout')
   .option('-r, --region <region>', 'AWS region for cost estimates', 'us-east-1')
-  .option('--no-cost', 'Skip cost estimation')
   .option('--summary-only', 'Show only the summary, hide per-resource list')
   .action(async (planFile, options) => {
     try {
@@ -46,14 +45,7 @@ program
       }
 
       const resources = parsePlan(planData);
-
-      if (options.cost) {
-        try {
-          await estimateCosts(resources, planData, options.region);
-        } catch (err) {
-          console.error(`Warning: Cost estimation failed: ${err.message}`);
-        }
-      }
+      estimateCosts(resources, options.region);
 
       let output;
       switch (options.format) {

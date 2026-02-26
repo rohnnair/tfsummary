@@ -56,7 +56,12 @@ function renderTerminal(resources, options = {}) {
     for (const r of resources) {
       const color = ACTION_COLORS[r.action] || chalk.white;
       const icon = ACTION_ICONS[r.action] || ' ';
-      const costStr = r.monthlyCost !== null ? chalk.cyan(` (${formatCost(r.monthlyCost)})`) : '';
+      let costStr = '';
+      if (r.monthlyCost !== null) {
+        costStr = chalk.cyan(` (${formatCost(r.monthlyCost)})`);
+      } else if (r.costType === 'usage-based') {
+        costStr = chalk.dim(' [usage-based]');
+      }
 
       lines.push(color(`  ${icon} [${r.actionLabel.padEnd(7)}] ${r.address}${costStr}`));
 
@@ -84,10 +89,14 @@ function renderTerminal(resources, options = {}) {
 
   // Cost summary
   const totalMonthlyCost = resources.reduce((sum, r) => sum + (r.monthlyCost || 0), 0);
+  const hasUsageBased = resources.some(r => r.costType === 'usage-based');
   if (totalMonthlyCost > 0) {
     lines.push('');
     lines.push(chalk.dim('─'.repeat(72)));
-    lines.push(chalk.bold.cyan(`  Estimated monthly cost: $${totalMonthlyCost.toFixed(2)}/mo`));
+    lines.push(chalk.bold.cyan(`  Estimated fixed monthly cost: $${totalMonthlyCost.toFixed(2)}/mo`));
+    if (hasUsageBased) {
+      lines.push(chalk.dim('  * Usage-based resources depend on actual consumption'));
+    }
   }
 
   // Summary counts

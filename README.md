@@ -1,13 +1,15 @@
 # tfsummary
 
-Beautify Terraform plan output with cost estimates via [OpenInfraQuote](https://github.com/terrateamio/openinfraquote).
+Beautify Terraform plan output with built-in AWS cost estimates.
 
 ## Features
 
 - Colored terminal output with resource diffs
 - HTML dark-themed reports
 - GitHub PR-ready markdown output
-- Cost estimates via OpenInfraQuote
+- Built-in AWS cost estimates (no external tools required)
+- Accurate fixed-cost pricing for EC2, RDS, ALB, NAT Gateway, EBS
+- Usage-based resources (S3, SQS, Lambda) labeled honestly
 - Destructive change warnings
 - Field-level diffs for updated resources
 - Reads from file or stdin pipe
@@ -31,8 +33,8 @@ tfsummary plan.json
 # Pipe from terraform
 terraform show -json tfplan | tfsummary
 
-# Skip cost estimation
-tfsummary plan.json --no-cost
+# Specify AWS region for pricing
+tfsummary plan.json --region us-west-2
 ```
 
 ## Usage
@@ -50,7 +52,6 @@ Options:
   -f, --format <format>        Output format: terminal, html, markdown, json (default: "terminal")
   -o, --out <file>             Write output to file instead of stdout
   -r, --region <region>        AWS region for cost estimates (default: "us-east-1")
-  --no-cost                    Skip cost estimation
   --summary-only               Show only the summary, hide per-resource list
   -h, --help                   display help for command
 ```
@@ -91,22 +92,24 @@ Parsed resource data as JSON for programmatic use.
 
 ## Cost Estimation
 
-tfsummary uses [OpenInfraQuote](https://github.com/terrateamio/openinfraquote) for cost estimates. Install it:
+tfsummary includes built-in AWS pricing data — no external tools or credentials required.
 
-```bash
-# macOS
-brew tap terrateamio/openinfraquote
-brew install openinfraquote
+**Fixed-cost resources** (priced automatically):
+- EC2 instances (47 instance types)
+- RDS instances (PostgreSQL, MySQL, MariaDB)
+- Application & Network Load Balancers
+- NAT Gateways
+- EBS volumes
+- ElastiCache nodes
+- Elastic IPs
 
-# Linux
-curl -LO https://github.com/terrateamio/openinfraquote/releases/latest/download/oiq-linux-amd64.tar.gz
-tar -xzf oiq-linux-amd64.tar.gz
-sudo mv oiq /usr/local/bin/
-```
+**Usage-based resources** (labeled as such):
+- S3, SQS, SNS, Lambda, DynamoDB, CloudWatch, API Gateway, CloudFront
 
-Pricing data is auto-downloaded daily from `https://oiq.terrateam.io/prices.csv.gz` and cached at `~/.tfsummary/prices.csv`.
+**Free resources** (no cost shown):
+- IAM roles/policies, Security Groups, VPC, Subnets, Route53 records, ACM certificates, ECR, Secrets Manager
 
-Use `--no-cost` to skip cost estimation if oiq is not installed.
+Pricing covers 12 AWS regions with regional multipliers applied automatically.
 
 ## GitHub Actions
 

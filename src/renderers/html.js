@@ -148,7 +148,12 @@ function renderHtml(resources, options = {}) {
   if (!options.summaryOnly) {
     for (const r of resources) {
       const color = ACTION_COLORS[r.action] || '#c9d1d9';
-      const costStr = r.monthlyCost !== null ? formatCost(r.monthlyCost) : '';
+      let costLabel = '';
+      if (r.monthlyCost !== null) {
+        costLabel = `<span class="cost">${escapeHtml(formatCost(r.monthlyCost))}</span>`;
+      } else if (r.costType === 'usage-based') {
+        costLabel = `<span class="cost" style="color:#484f58">usage-based</span>`;
+      }
 
       html += `
   <div class="resource">
@@ -157,7 +162,7 @@ function renderHtml(resources, options = {}) {
         <span class="action-badge" style="background:${color}">${escapeHtml(r.actionLabel)}</span>
         <span class="address">${escapeHtml(r.address)}</span>
       </div>
-      ${costStr ? `<span class="cost">${escapeHtml(costStr)}</span>` : ''}
+      ${costLabel}
     </div>`;
 
       if (r.diffs && r.diffs.length > 0) {
@@ -191,9 +196,14 @@ function renderHtml(resources, options = {}) {
   }
 
   // Cost total
+  const hasUsageBased = resources.some(r => r.costType === 'usage-based');
   if (totalMonthlyCost > 0) {
     html += `
-  <div class="cost-total">Estimated monthly cost: $${totalMonthlyCost.toFixed(2)}/mo</div>`;
+  <div class="cost-total">Estimated fixed monthly cost: $${totalMonthlyCost.toFixed(2)}/mo</div>`;
+    if (hasUsageBased) {
+      html += `
+  <div style="color:#484f58;font-size:0.8rem;margin-top:-0.5rem">* Usage-based resources depend on actual consumption</div>`;
+    }
   }
 
   // Summary bar

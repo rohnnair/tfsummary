@@ -1,0 +1,71 @@
+{
+  "ec2": {
+    "t3.micro": 0.0104, "t3.small": 0.0208, "t3.medium": 0.0416,
+    "t3.large": 0.0832, "t3.xlarge": 0.1664, "t3.2xlarge": 0.3328,
+    "t3a.micro": 0.0094, "t3a.small": 0.0188, "t3a.medium": 0.0376,
+    "t3a.large": 0.0752, "t3a.xlarge": 0.1504,
+    "t4g.micro": 0.0084, "t4g.small": 0.0168, "t4g.medium": 0.0336,
+    "t4g.large": 0.0672, "t4g.xlarge": 0.1344,
+    "m5.large": 0.0960, "m5.xlarge": 0.1920, "m5.2xlarge": 0.3840, "m5.4xlarge": 0.7680,
+    "m6i.large": 0.0960, "m6i.xlarge": 0.1920, "m6i.2xlarge": 0.3840, "m6i.4xlarge": 0.7680,
+    "m7i.large": 0.1008, "m7i.xlarge": 0.2016, "m7i.2xlarge": 0.4032,
+    "m6g.large": 0.0770, "m6g.xlarge": 0.1540, "m6g.2xlarge": 0.3080,
+    "m7g.large": 0.0816, "m7g.xlarge": 0.1632, "m7g.2xlarge": 0.3264,
+    "c5.large": 0.0850, "c5.xlarge": 0.1700, "c5.2xlarge": 0.3400, "c5.4xlarge": 0.6800,
+    "c6i.large": 0.0850, "c6i.xlarge": 0.1700, "c6i.2xlarge": 0.3400,
+    "c7i.large": 0.0893, "c7i.xlarge": 0.1785, "c7i.2xlarge": 0.3570,
+    "c6g.large": 0.0680, "c6g.xlarge": 0.1360, "c6g.2xlarge": 0.2720,
+    "r5.large": 0.1260, "r5.xlarge": 0.2520, "r5.2xlarge": 0.5040,
+    "r6i.large": 0.1260, "r6i.xlarge": 0.2520, "r6i.2xlarge": 0.5040,
+    "r6g.large": 0.1008, "r6g.xlarge": 0.2016, "r6g.2xlarge": 0.4032,
+    "r7g.large": 0.1073, "r7g.xlarge": 0.2146, "r7g.2xlarge": 0.4291,
+    "i3.large": 0.1560, "i3.xlarge": 0.3120, "i3.2xlarge": 0.6240
+  },
+  "rds": {
+    "postgres": {
+      "db.t3.micro": 0.0180, "db.t3.small": 0.0360, "db.t3.medium": 0.0720, "db.t3.large": 0.1440,
+      "db.t4g.micro": 0.0160, "db.t4g.small": 0.0320, "db.t4g.medium": 0.0650, "db.t4g.large": 0.1290,
+      "db.m5.large": 0.1710, "db.m5.xlarge": 0.3420, "db.m5.2xlarge": 0.6840,
+      "db.m6g.large": 0.1510, "db.m6g.xlarge": 0.3020, "db.m6g.2xlarge": 0.6040,
+      "db.r5.large": 0.2400, "db.r5.xlarge": 0.4800, "db.r5.2xlarge": 0.9600,
+      "db.r6g.large": 0.2090, "db.r6g.xlarge": 0.4180, "db.r6g.2xlarge": 0.8360,
+      "db.r7g.large": 0.2188, "db.r7g.xlarge": 0.4376, "db.r7g.2xlarge": 0.8752
+    },
+    "mysql": {
+      "db.t3.micro": 0.0170, "db.t3.small": 0.0340, "db.t3.medium": 0.0680, "db.t3.large": 0.1360,
+      "db.t4g.micro": 0.0160, "db.t4g.small": 0.0320, "db.t4g.medium": 0.0650, "db.t4g.large": 0.1290,
+      "db.m5.large": 0.1710, "db.m5.xlarge": 0.3420, "db.m5.2xlarge": 0.6840,
+      "db.m6g.large": 0.1510, "db.m6g.xlarge": 0.3020, "db.m6g.2xlarge": 0.6040,
+      "db.r5.large": 0.2400, "db.r5.xlarge": 0.4800, "db.r5.2xlarge": 0.9600,
+      "db.r6g.large": 0.2090, "db.r6g.xlarge": 0.4180, "db.r6g.2xlarge": 0.8360,
+      "db.r7g.large": 0.2188, "db.r7g.xlarge": 0.4376, "db.r7g.2xlarge": 0.8752
+    },
+    "mariadb": {
+      "db.t3.micro": 0.0170, "db.t3.small": 0.0340, "db.t3.medium": 0.0680, "db.t3.large": 0.1360,
+      "db.t4g.micro": 0.0160, "db.t4g.small": 0.0320, "db.t4g.medium": 0.0650, "db.t4g.large": 0.1290,
+      "db.m5.large": 0.1710, "db.m5.xlarge": 0.3420, "db.m5.2xlarge": 0.6840,
+      "db.m6g.large": 0.1510, "db.m6g.xlarge": 0.3020, "db.m6g.2xlarge": 0.6040,
+      "db.r5.large": 0.2400, "db.r5.xlarge": 0.4800, "db.r5.2xlarge": 0.9600,
+      "db.r6g.large": 0.2090, "db.r6g.xlarge": 0.4180, "db.r6g.2xlarge": 0.8360,
+      "db.r7g.large": 0.2188, "db.r7g.xlarge": 0.4376, "db.r7g.2xlarge": 0.8752
+    }
+  },
+  "alb": { "hourly": 0.0225 },
+  "nlb": { "hourly": 0.0225 },
+  "nat_gateway": { "hourly": 0.045 },
+  "ebs": {
+    "gp2": 0.10, "gp3": 0.08, "io1": 0.125, "io2": 0.125,
+    "st1": 0.045, "sc1": 0.015
+  },
+  "elasticache": {
+    "cache.t3.micro": 0.017, "cache.t3.small": 0.034, "cache.t3.medium": 0.068,
+    "cache.m5.large": 0.155, "cache.r6g.large": 0.197
+  },
+  "elastic_ip": { "monthly": 3.65 },
+  "regional_multipliers": {
+    "us-east-1": 1.00, "us-east-2": 1.00, "us-west-1": 1.08, "us-west-2": 1.00,
+    "eu-west-1": 1.10, "eu-west-2": 1.13, "eu-central-1": 1.13,
+    "ap-southeast-1": 1.12, "ap-northeast-1": 1.15, "ap-south-1": 1.04,
+    "ca-central-1": 1.05, "sa-east-1": 1.40
+  }
+}
