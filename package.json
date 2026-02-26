@@ -1,0 +1,37 @@
+{
+  "name": "tfsummary",
+  "version": "1.0.0",
+  "description": "Beautify Terraform plan output with cost estimates via OpenInfraQuote",
+  "main": "src/index.js",
+  "bin": {
+    "tfsummary": "./bin/tfsummary.js"
+  },
+  "scripts": {
+    "test": "node bin/tfsummary.js examples/sample-plan.json --no-cost"
+  },
+  "keywords": [
+    "terraform",
+    "plan",
+    "summary",
+    "cost",
+    "openinfraquote",
+    "cli",
+    "devops",
+    "infrastructure"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^11.1.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "README.md",
+    "LICENSE"
+  ]
+}

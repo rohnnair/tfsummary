@@ -1,0 +1,61 @@
+name: Terraform Plan Summary
+
+on:
+  pull_request:
+    paths:
+      - '**/*.tf'
+      - '**/*.tfvars'
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  plan-summary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install tfsummary
+        run: npm install -g tfsummary
+
+      - name: Install OpenInfraQuote
+        run: |
+          curl -LO https://github.com/terrateamio/openinfraquote/releases/latest/download/oiq-linux-amd64.tar.gz
+          tar -xzf oiq-linux-amd64.tar.gz
+          sudo mv oiq /usr/local/bin/
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        id: plan
+        run: |
+          terraform plan -out=tfplan
+          terraform show -json tfplan > plan.json
+
+      - name: Generate Summary
+        id: summary
+        run: |
+          SUMMARY=$(tfsummary plan.json --format markdown --region us-east-1)
+          echo "summary<<EOF" >> $GITHUB_OUTPUT
+          echo "$SUMMARY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Comment on PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: terraform-plan
+          message: |
+            ${{ steps.summary.outputs.summary }}
